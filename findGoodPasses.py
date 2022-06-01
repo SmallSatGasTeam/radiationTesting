@@ -4,7 +4,6 @@ all scheduled SatNOGS passes. It then compares the two. If a pass is calculated 
 as a "good pass", with the station ID and timeMaxEl, which should be used as the TX Down Time.
 """
 
-from satnogsAPIRequests import getScheduledObservations
 from calculatePasses import calculatePasses
 import settings as settings
 import logging
@@ -49,23 +48,8 @@ def findGoodPasses():
     for station in range(0,len(allCalculatedPasses)):
         stationsCalculatedPasses = allCalculatedPasses[station]['calculatedPasses']
         for eachCalculatedPass in range(0, len(stationsCalculatedPasses)):
-            # Checks if station is SatNOGS or not
-            if allCalculatedPasses[station]['isSatnogs'] == 'Y':
-                for eachSatnogsStation in range(0,len(allSatnogsPasses)):
-                    stationsSatnogsPasses = allSatnogsPasses[eachSatnogsStation]['satnogsPasses']
-                    for eachSatnogsPass in range(0,len(stationsSatnogsPasses)):
-                        # If the maxElTime is in between the start and end of a SatNOGS scheduled pass, append to goodPasses
-                        # Also check to make sure the Satnogs Pass actually belongs to our calculated pass, otherwise you get station overlap
-                        # Note: this large loop could be made a lot more efficient by only checking for satnogs passes on the stations whose ID matches our ID
-                        if (float(stationsCalculatedPasses[eachCalculatedPass]['maxElTime']) > stationsSatnogsPasses[eachSatnogsPass]['start'])\
-                        and (float(stationsCalculatedPasses[eachCalculatedPass]['maxElTime']) < stationsSatnogsPasses[eachSatnogsPass]['end'])\
-                        and (allCalculatedPasses[station]['id'] == allSatnogsPasses[eachSatnogsStation]['id']):
-                            eachGoodPass = {'id':allCalculatedPasses[station]['id'], 'maxElTime': stationsCalculatedPasses[eachCalculatedPass]['maxElTime'], 'maxEl': stationsCalculatedPasses[eachCalculatedPass]['maxEl'], 'passDuration': stationsCalculatedPasses[eachCalculatedPass]['passDuration']}
-                            goodPasses.append(eachGoodPass)
-            # If not SatNOGS station, append all passes
-            else:
-                eachGoodPass = {'id':allCalculatedPasses[station]['id'], 'maxElTime': stationsCalculatedPasses[eachCalculatedPass]['maxElTime'], 'maxEl': stationsCalculatedPasses[eachCalculatedPass]['maxEl'], 'passDuration': stationsCalculatedPasses[eachCalculatedPass]['passDuration']}
-                goodPasses.append(eachGoodPass)
+            eachGoodPass = {'id':allCalculatedPasses[station]['id'], 'maxElTime': stationsCalculatedPasses[eachCalculatedPass]['maxElTime'], 'maxEl': stationsCalculatedPasses[eachCalculatedPass]['maxEl'], 'passDuration': stationsCalculatedPasses[eachCalculatedPass]['passDuration']}
+            goodPasses.append(eachGoodPass)
     
     logger.debug("%d passes found that are ready for transmisions: %s\n", len(goodPasses), str(goodPasses))
 

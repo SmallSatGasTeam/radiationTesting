@@ -8,7 +8,7 @@ from time import sleep
 import serial
 
 # Set up logging
-logger = logging.getLogger("automagic.sendPackets")
+logger = logging.getLogger("ASH.sendPackets")
 
 def sendPackets(packetList):
     serialPort = serial.Serial('/dev/serial0', 115200)

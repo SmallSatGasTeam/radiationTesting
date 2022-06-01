@@ -12,22 +12,23 @@ After pass: grab next pass
 '''
 import logging
 from logging.handlers import TimedRotatingFileHandler
-import calculatePasses
-import settings
+# import calculatePasses
+# import settings
 import time
 from time import sleep
 import findGoodPasses
 import createPackets
 import sendPackets
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
 # Set up logging
-logger = logging.getLogger("automagic")
+logger = logging.getLogger("ASH")
+logging.basicConfig(level=logging.DEBUG)
 
 
 
 def main():
-    logger.debug("Starting automagic program")
+    logger.debug("Starting ASH program")
 
     # GPIO Pin for enabling transceiver. Pull the pin high to enable transceiver
     EN_UHF_GPIO = 18
@@ -73,7 +74,7 @@ def main():
 
         # Get next pass over our GS
         # GAS_ROT = settings.GAS_ROT
-        nextPassTime = round(time.time() / 3600) * 3600 + 3600
+        nextPassTime = round(time.time() / 900) * 900 + 900
         logger.info("Next Pass TCA: %s", nextPassTime)
 
         # Loop to check when we are prepareBuffer minutes away from the pass TCA:
@@ -89,7 +90,7 @@ def main():
                 goodPasses = findGoodPasses.findGoodPasses()
 
                 # calculate delta-t
-                passesWithDeltaT = createPackets.calculateDeltaT(goodPasses,nextPassTime)
+                passesWithDeltaT = createPackets.calculateDeltaT(goodPasses, nextPassTime)
 
                 # Add packet info to passes dictionary
                 # Note: this will need to be improved for a queue-type system eventually

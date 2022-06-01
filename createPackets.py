@@ -10,7 +10,7 @@ import hmac
 import hashlib
 
 # Set up logging
-logger = logging.getLogger("automagic.createPackets")
+logger = logging.getLogger("ASH.createPackets")
 
 
 """
