@@ -36,10 +36,10 @@ def findGoodPasses():
         allCalculatedPasses.append(eachCalculatedPasses)
 
         # Finds currently scheduled SatNOGS passes for each SatNOGS station and stores them into the master array allSatnogsPasses
-        if isSatnogs == 'Y':
-            satnogsPasses = getScheduledObservations(stationID)
-            eachSatnogsPass = {'id':stationID, 'satnogsPasses': satnogsPasses}
-            allSatnogsPasses.append(eachSatnogsPass)
+        # if isSatnogs == 'Y':
+        #     satnogsPasses = getScheduledObservations(stationID)
+        #     eachSatnogsPass = {'id':stationID, 'satnogsPasses': satnogsPasses}
+        #     allSatnogsPasses.append(eachSatnogsPass)
 
     # Master array for passes that are "good" - both calculated and scheduled on SatNOG (includes all non-SatNOGS passes)
     goodPasses = []
