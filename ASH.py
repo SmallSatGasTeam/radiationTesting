@@ -61,7 +61,7 @@ def main():
     """END DATA/COMMAND SELECTION"""
 
     # Define buffer time before pass TCA for pass and packet calculation 
-    preBuffer = 15 * 60 # seconds
+    preBuffer = 2 * 60 # seconds
     
     # This outer loop runs at the start of the program, and then at the end of each pass
     while True:
@@ -74,7 +74,8 @@ def main():
 
         # Get next pass over our GS
         # GAS_ROT = settings.GAS_ROT
-        nextPassTime = round(time.time() / 900) * 900 + 900
+        transmissionTiming = 5 * 60
+        nextPassTime = round(time.time() / transmissionTiming) * transmissionTiming + transmissionTiming
         logger.info("Next Pass TCA: %s", nextPassTime)
 
         # Loop to check when we are prepareBuffer minutes away from the pass TCA:
