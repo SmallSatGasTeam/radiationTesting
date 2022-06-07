@@ -15,8 +15,6 @@ def findGoodPasses():
     # Master array for all calculated passes
     allCalculatedPasses = []
 
-    # Master array for all scheduled SatNOGS passes
-    allSatnogsPasses = []
 
     # Loops to calculate all passes over each ground station
     for i in range(0, len(settings.STATION_LIST)):

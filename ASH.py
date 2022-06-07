@@ -74,7 +74,7 @@ def main():
 
         # Get next pass over our GS
         # GAS_ROT = settings.GAS_ROT
-        transmissionTiming = 5 * 60
+        transmissionTiming = 3 * 60
         nextPassTime = round(time.time() / transmissionTiming) * transmissionTiming + transmissionTiming
         logger.info("Next Pass TCA: %s", nextPassTime)
 

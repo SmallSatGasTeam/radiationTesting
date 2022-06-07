@@ -11,52 +11,60 @@ import serial
 logger = logging.getLogger("ASH.sendPackets")
 
 def sendPackets(packetList):
-    serialPort = serial.Serial('/dev/serial0', 115200)
-
-    # Set ground radio pipe mode to 60 sec timeout (in case satellite signal is weak)
-    logger.info("Setting local radio pipe mode timeout to 60 seconds")
-    serialPort.write(b'ES+W23060000003C\r')
-    logger.info(b'ES+W23060000003C\r')
-    sleep(.5)
-
-    # Put ground radio in pipe mode
-    logger.info("Putting local radio in pipe mode")
-    serialPort.write(b'ES+W23003321 10E2651B\r') #Changed based on which is transmitting
-    logger.info(b'ES+W23003321 10E2651B\r')
-    sleep(.5)
-
-    # Transmits command to disable audio beacon 5 times in a row
-    # This allows the amplifier to "charge up"
-    logger.info("disabling audio beacon")
-    for i in range(5):
-        serialPort.write(b'ES+W220800000000\r')
-        logger.info(b'ES+W220800000000\r')
-        sleep(.120)
-
-    # Transmits command to put satellite radio in pipe mode, an enables or disables AX.25 beacon
-    # Enable AX Beacon
-    """
-    for i in range(5):
-        logger.info("enabling ax beacon, putting sat radio into pipe mode")
-        serialPort.write(b'ES+W22003361\r')
-        logger.info(b'ES+W22003361\r')
-        sleep(.120)
-    """
-    # Disable AX Beacon, put satellite radio in pipe mode
-    for i in range(5):
-        logger.info("disabling ax beacon, putting sat radio into pipe mode")
-        serialPort.write(b'ES+W22003321\r')
-        logger.info(b'ES+W22003321\r')
-        sleep(.120)
-
-    # Transmit packet data
     for eachPacket in packetList:
         packetData = eachPacket.get('packetData')
         logger.debug("Sending packet data: %s", packetData)
-        serialPort.write(packetData)
-        sleep(.120)
+    try:
+        serialPort = serial.Serial('/dev/serial0', 115200)
 
-    #serialPort.close()
+
+        # Set ground radio pipe mode to 60 sec timeout (in case satellite signal is weak)
+        logger.info("Setting local radio pipe mode timeout to 60 seconds")
+        serialPort.write(b'ES+W23060000003C\r')
+        logger.info(b'ES+W23060000003C\r')
+        sleep(.5)
+
+        # Put ground radio in pipe mode
+        logger.info("Putting local radio in pipe mode")
+        serialPort.write(b'ES+W23003321 10E2651B\r') #Changed based on which is transmitting
+        logger.info(b'ES+W23003321 10E2651B\r')
+        sleep(.5)
+
+        # Transmits command to disable audio beacon 5 times in a row
+        # This allows the amplifier to "charge up"
+        logger.info("disabling audio beacon")
+        for i in range(5):
+            serialPort.write(b'ES+W220800000000\r')
+            logger.info(b'ES+W220800000000\r')
+            sleep(.120)
+
+        # Transmits command to put satellite radio in pipe mode, an enables or disables AX.25 beacon
+        # Enable AX Beacon
+        """
+        for i in range(5):
+            logger.info("enabling ax beacon, putting sat radio into pipe mode")
+            serialPort.write(b'ES+W22003361\r')
+            logger.info(b'ES+W22003361\r')
+            sleep(.120)
+        """
+        # Disable AX Beacon, put satellite radio in pipe mode
+        for i in range(5):
+            logger.info("disabling ax beacon, putting sat radio into pipe mode")
+            serialPort.write(b'ES+W22003321\r')
+            logger.info(b'ES+W22003321\r')
+            sleep(.120)
+
+        # Transmit packet data
+        for eachPacket in packetList:
+            packetData = eachPacket.get('packetData')
+            logger.debug("Sending packet data: %s", packetData)
+            serialPort.write(packetData)
+            sleep(.120)
+
+        #serialPort.close()
+
+    except:
+        logger.debug("no serial")
     return
 
 if __name__ == "__main__":
