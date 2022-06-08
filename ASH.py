@@ -19,7 +19,7 @@ from time import sleep
 import findGoodPasses
 import createPackets
 import sendPackets
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 # Set up logging
 logger = logging.getLogger("ASH")
