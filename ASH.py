@@ -34,10 +34,10 @@ def main():
     EN_UHF_GPIO = 18
 
     #Set up the GPIO pins for use
-    # GPIO.setwarnings(False)
-    # GPIO.setmode(GPIO.BOARD)
-    # GPIO.setup(EN_UHF_GPIO, GPIO.OUT, initial=GPIO.HIGH)
-    # GPIO.output(EN_UHF_GPIO, GPIO.HIGH)
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(EN_UHF_GPIO, GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.output(EN_UHF_GPIO, GPIO.HIGH)
 
     # Create command packet to send.
     clearTXWindowsCommand = createPackets.createCommandPacket(clearWindows=True)
