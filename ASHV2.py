@@ -69,6 +69,8 @@ def main():
 
         while True:
             timeUntilPass = nextPassTime - round(time.time())
+            logger.info("Time until next pass: %s seconds", timeUntilPass)
+
 
             if timeUntilPass < preBuffer and not prepared:
                 logger.info("Within buffer time, calculating passes and creating packets!")
