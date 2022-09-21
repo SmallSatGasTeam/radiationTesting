@@ -25,8 +25,6 @@ import RPi.GPIO as GPIO
 logger = logging.getLogger("ASH")
 logging.basicConfig(level=logging.DEBUG)
 
-
-
 def main():
     logger.debug("Starting ASH program")
 
@@ -39,8 +37,6 @@ def main():
     GPIO.setup(EN_UHF_GPIO, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.output(EN_UHF_GPIO, GPIO.HIGH)
 
-    # Create command packet to send.
-    clearTXWindowsCommand = createPackets.createCommandPacket(clearWindows=True)
     takePicCommand = createPackets.createCommandPacket(takePic=True)
 
     """NOTE: SET THE DATA TYPE AND COMMANDS IN THIS SECTION"""
@@ -51,19 +47,14 @@ def main():
     dataType = 0
     picNumber = 0
     lineNumber = 0
-    # Different line number for our station
-    GASlineNumber = 267
-    logger.debug('Selected packet data: TX Duration: %s, Data Type: %s, Pic Number: %s, Line Number: %s', txDuration, dataType, picNumber, lineNumber)
-    
+
     selectedCommand = [{'packetData':takePicCommand}]
     logger.debug('Selected command: %s', selectedCommand)
 
     """END DATA/COMMAND SELECTION"""
 
-    # Define buffer time before pass TCA for pass and packet calculation 
-    preBuffer = 3 * 60 # seconds
-    
-    # This outer loop runs at the start of the program, and then at the end of each pass
+    preBuffer = 2 * 60
+
     while True:
         # Flag for if the passes have been calculated and packets generated
         prepared = False
@@ -72,18 +63,13 @@ def main():
         # Flag for if the windows have been sent
         windowTXSent = False
 
-        # Get next pass over our GS
-        # GAS_ROT = settings.GAS_ROT
         transmissionTiming = 1 * 60
         nextPassTime = round(time.time() / transmissionTiming) * transmissionTiming + transmissionTiming
         logger.info("Next Pass TCA: %s", nextPassTime)
 
-        # Loop to check when we are prepareBuffer minutes away from the pass TCA:
         while True:
             timeUntilPass = nextPassTime - round(time.time())
-            logger.info("Time until next pass: %s seconds", timeUntilPass)
 
-            # Calculate goodPasses and create Packets if we're close enough to the window
             if timeUntilPass < preBuffer and not prepared:
                 logger.info("Within buffer time, calculating passes and creating packets!")
 
@@ -97,15 +83,10 @@ def main():
                 # Note: this will need to be improved for a queue-type system eventually
                 passesWithPacketInfo = passesWithDeltaT
                 for eachPass in passesWithPacketInfo:
-                    if eachPass['id'] == 2550 and eachPass['deltaT'] == 35:
-                        eachPass.update({'txDuration':txDuration, 'dataType':dataType, 'picNumber':picNumber, 'lineNumber':GASlineNumber})
-                    else:
-                        eachPass.update({'txDuration':txDuration, 'dataType':dataType, 'picNumber':picNumber, 'lineNumber':lineNumber})
+                    eachPass.update({'txDuration':txDuration, 'dataType':dataType, 'picNumber':picNumber, 'lineNumber':lineNumber})
 
                 dataType = 1 - dataType
 
-                logger.debug("%d Passes with Packet Info: %s\n", len(passesWithPacketInfo), passesWithPacketInfo)
-                
                 # Create packet data, add the final packet data to the dictionary
                 passesWithPacketData = passesWithPacketInfo
                 for eachPass in passesWithPacketData:
@@ -133,12 +114,15 @@ def main():
                 windowTXSent = True
                 
             # The current window is over, break the loop to calculate the next window and do it all again
-            elif timeUntilPass < -1 * preBuffer:
+            elif timeUntilPass < -5:
                 break
 
             else:
                 sleep(1)
-            
+
+
+
+
 if __name__ == "__main__":
     ## Console Logging Setup. When the code is not called by the parent script, logging must be setup up separately.
     # Set initial level - anything below this level will not be passed to the handlers.
