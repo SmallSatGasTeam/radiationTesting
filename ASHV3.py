@@ -6,7 +6,7 @@ import hashlib
 """ Creates packets in proper formats for transmission and requests that format from satellite """
     
 def packetSelect(typeOfPacket, dataType):
-    if(typeOfPacket == '0'):
+    if(typeOfPacket == 'Window'):
         # Window packet
         packet = '00000000'
         packet += int4tobin(30) # 'Input the number of seconds until window start: '
@@ -17,7 +17,7 @@ def packetSelect(typeOfPacket, dataType):
         packet += int4tobin(1) # start from line 1
         print(packet)
         print(hex(int(packet, 2))[2:].zfill(28))
-        return hex(int(packet, 2))[2:].zfill(28), False
+        return hex(int(packet, 2))[2:].zfill(28)
 
     else:
         #Command Packet
@@ -45,7 +45,7 @@ def packetSelect(typeOfPacket, dataType):
             else:
                 content += '00000001'
         #This adds 4 dead bits to the end
-        return hex(int(content, 2))[2:].zfill(32), False
+        return hex(int(content, 2))[2:].zfill(32)
 		
 
 
@@ -93,14 +93,15 @@ def main():
     timeBetweenPasses = 3 * 60
     print(str(timeBetweenPasses) + " seconds between passes")
     timeElasped = 0
+    typeOfPacket = "Window"
+    dataType = 0
     while True:
         if (timeElasped >= timeBetweenPasses - 2 and timeElasped <= timeBetweenPasses + 2):
-            packet, AX25 = packetSelect()
-            if not AX25:
-                encryptedPacket = encrypt(packet)
-                transmitPacket(encryptedPacket, False)
-            else:
-                transmitPacket(packet, True)
+            packet = packetSelect(typeOfPacket, dataType)
+
+            encryptedPacket = encrypt(packet)
+            transmitPacket(encryptedPacket, False)
+
             timeElasped = 0
         else:
             sleep(1)
