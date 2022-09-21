@@ -101,7 +101,15 @@ def main():
 
             encryptedPacket = encrypt(packet)
             transmitPacket(encryptedPacket, False)
-
+            if (typeOfPacket == "Window"):
+                typeOfPacket = "Command"
+            else:
+                typeOfPacket = "Window"
+            dataType += 1
+            if (dataType == 3):
+                dataType = 4
+            if (dataType > 4):
+                dataType = 0
             timeElasped = 0
         else:
             sleep(1)
