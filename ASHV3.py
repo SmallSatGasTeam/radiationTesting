@@ -4,7 +4,7 @@ from time import sleep
 import hmac
 import hashlib
 """ Creates packets in proper formats for transmission and requests that format from satellite """
-
+    
 def packetSelect(typeOfPacket, dataType):
     if(typeOfPacket == '0'):
         # Window packet
@@ -89,15 +89,19 @@ def encrypt(packet):
 	return fullpacket
 
 def main():
-	while True:
-        
-
-		packet, AX25 = packetSelect()
-		if not AX25:
-			encryptedPacket = encrypt(packet)
-			transmitPacket(encryptedPacket, False)
-		else:
-			transmitPacket(packet, True)
+    timeBetweenPasses = 3 * 60
+    timeElasped = 0
+    while True:
+        if (timeElasped >= timeBetweenPasses - 2 and timeElasped <= timeBetweenPasses + 2):
+            packet, AX25 = packetSelect()
+            if not AX25:
+                encryptedPacket = encrypt(packet)
+                transmitPacket(encryptedPacket, False)
+            else:
+                transmitPacket(packet, True)
+        else:
+            sleep(1)
+            timeElasped += 1
 
 if __name__ == '__main__':
 	main()
