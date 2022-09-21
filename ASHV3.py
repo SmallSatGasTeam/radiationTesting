@@ -92,7 +92,7 @@ def main():
     print("Started running program")
     timeBetweenPasses = 3 * 60
     print(str(timeBetweenPasses) + " seconds between passes")
-    timeElasped = 0
+    timeElasped = 170
     typeOfPacket = "Window"
     dataType = 0
     while True:
