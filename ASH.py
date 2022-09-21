@@ -48,14 +48,14 @@ def main():
     # Choose tx duration, data type, pic number, and line number for all the upcoming passes
     # Data types: 0 - Attitude, 1 - TTNC, 2 - Deploy, 3 - HQ, 4 - LQ
     txDuration = 10
-    dataType = 3
-    picNumber = 10
+    dataType = 0
+    picNumber = 0
     lineNumber = 0
     # Different line number for our station
     GASlineNumber = 267
     logger.debug('Selected packet data: TX Duration: %s, Data Type: %s, Pic Number: %s, Line Number: %s', txDuration, dataType, picNumber, lineNumber)
     
-    selectedCommand = [{'packetData':clearTXWindowsCommand}]
+    selectedCommand = [{'packetData':takePicCommand}]
     logger.debug('Selected command: %s', selectedCommand)
 
     """END DATA/COMMAND SELECTION"""
