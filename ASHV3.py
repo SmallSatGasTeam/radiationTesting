@@ -90,7 +90,7 @@ def encrypt(packet):
 
 def main():
     print("Started running program")
-    timeBetweenPasses = 3 * 60
+    timeBetweenPasses = 1 * 60
     print(str(timeBetweenPasses) + " seconds between passes")
     timeElasped = 170
     typeOfPacket = "Window"
@@ -105,11 +105,15 @@ def main():
                 typeOfPacket = "Command"
             else:
                 typeOfPacket = "Window"
-            dataType += 1
+                dataType += 1
+
             if (dataType == 3):
                 dataType = 4
             if (dataType > 4):
                 dataType = 0
+            
+            print(dataType)
+            
             timeElasped = 0
         else:
             sleep(1)
