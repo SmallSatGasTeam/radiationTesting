@@ -89,7 +89,9 @@ def encrypt(packet):
 	return fullpacket
 
 def main():
+    print("Started running program")
     timeBetweenPasses = 3 * 60
+    print(timeBetweenPasses + " seconds between passes")
     timeElasped = 0
     while True:
         if (timeElasped >= timeBetweenPasses - 2 and timeElasped <= timeBetweenPasses + 2):
@@ -99,9 +101,11 @@ def main():
                 transmitPacket(encryptedPacket, False)
             else:
                 transmitPacket(packet, True)
+            timeElasped = 0
         else:
             sleep(1)
             timeElasped += 1
+            print("Time Elapsed: " + timeElasped)
 
 if __name__ == '__main__':
 	main()
