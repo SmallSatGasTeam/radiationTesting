@@ -8,6 +8,7 @@ import hashlib
 def packetSelect(typeOfPacket, dataType):
     if(typeOfPacket == 'Window'):
         # Window packet
+        print("Window Packet")
         packet = '00000000'
         packet += int4tobin(30) # 'Input the number of seconds until window start: '
         packet += int2tobin(10) # 'Input the duration of the window in seconds: '
@@ -22,6 +23,7 @@ def packetSelect(typeOfPacket, dataType):
 
     else:
         #Command Packet
+        print("Command Packet")
         commandsList = []
         content = '00000001'
         commandsList.append(1) # 'Input 0 for disable TX, 1 for enable TX: '
@@ -112,7 +114,7 @@ def main():
             if (dataType == 2):
                 dataType = 4
             
-            print(dataType)
+            print("Data Type: ", dataType)
 
             timeElasped = 0
         else:
