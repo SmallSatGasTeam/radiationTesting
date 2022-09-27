@@ -26,9 +26,9 @@ def packetSelect(typeOfPacket, dataType):
         print("Command Packet")
         commandsList = []
         content = '00000001'
-        commandsList.append(1) # 'Input 0 for disable TX, 1 for enable TX: '
-        commandsList.append(0) # 'Input 0 for do nothing, 1 for erase all TX windows and progress: '
-        commandsList.append(1) # input('Input 0 for do nothing, 1 for take a picture: ')
+        commandsList.append(1) # Input 0 for disable TX, 1 for enable TX: 
+        commandsList.append(0) # Input 0 for do nothing, 1 for erase all TX windows and progress:
+        commandsList.append(1) # Input 0 for do nothing, 1 for take a picture:
         commandsList.append(0) # dont deploy boom
         commandsList.append(0) # dont reboot
         commandsList.append(0) # dont enable AX25
@@ -41,20 +41,20 @@ def packetSelect(typeOfPacket, dataType):
         commandsList.append(0)
         commandsList.append(0)
         commandsList.append(0)
-        #If more commands are added, we must take out some of the dead bits
+        # If more commands are added, we must take out some of the dead bits
         for command in commandsList:
             if command == '0':
                 content += '00000000'
             else:
                 content += '00000001'
-        #This adds 4 dead bits to the end
+        # This adds 4 dead bits to the end
         return hex(int(content, 2))[2:].zfill(32)
 		
 
 
 def transmitPacket(packet, AX25):
 	serialPort = serial.Serial('/dev/serial0', 115200)
-	serialPort.write(b'ES+W23003321\r') #Changed based on which is transmitting
+	serialPort.write(b'ES+W23003321\r') # Changed based on which is transmitting
 	sleep(1)
 	for i in range(50):
 		serialPort.write(b'ES+W22003321\r')
