@@ -13,7 +13,7 @@ def packetSelect(typeOfPacket, dataType):
         packet += int4tobin(30) # 'Input the number of seconds until window start: '
         packet += int2tobin(30) # 'Input the duration of the window in seconds: '
         packet += int1tobin(dataType) 
-        print("30 seconds until window start, 10 second window")
+        print("30 seconds until window start, 30 second window")
         # 'Number from 0-4 corresponding to requested data type.\n0 - Attitude, 1 - TTNC, 2 - Deploy, 3 - HQ, 4 - LQ: '
         packet += int2tobin(0) # picture number
         packet += int4tobin(1) # start from line 1
