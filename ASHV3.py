@@ -11,7 +11,7 @@ def packetSelect(typeOfPacket, dataType):
         print("Window Packet")
         packet = '00000000'
         packet += int4tobin(30) # 'Input the number of seconds until window start: '
-        packet += int2tobin(10) # 'Input the duration of the window in seconds: '
+        packet += int2tobin(30) # 'Input the duration of the window in seconds: '
         packet += int1tobin(dataType) 
         print("30 seconds until window start, 10 second window")
         # 'Number from 0-4 corresponding to requested data type.\n0 - Attitude, 1 - TTNC, 2 - Deploy, 3 - HQ, 4 - LQ: '
@@ -26,14 +26,14 @@ def packetSelect(typeOfPacket, dataType):
         print("Command Packet")
         commandsList = []
         content = '00000001'
-        commandsList.append(1) # Input 0 for disable TX, 1 for enable TX: 
-        commandsList.append(0) # Input 0 for do nothing, 1 for erase all TX windows and progress:
-        commandsList.append(1) # Input 0 for do nothing, 1 for take a picture:
+        commandsList.append(1) # Input 0 for disable TX, 1 for enable TX
+        commandsList.append(0) # Input 0 for do nothing, 1 for erase all TX windows and progress
+        commandsList.append(1) # Input 0 for do nothing, 1 for take a picture
         commandsList.append(0) # dont deploy boom
         commandsList.append(0) # dont reboot
         commandsList.append(0) # dont enable AX25
         commandsList.append(1) # skip to postBoomDeploy
-        commandsList.append(0) # don't delete pictures
+        commandsList.append(1) # delete pictures
         commandsList.append(0) # dont delete data
         commandsList.append(0) # disable beacon
         commandsList.append(0) # disable audio beacon
@@ -106,7 +106,7 @@ def main():
             transmitPacket(encryptedPacket, False)
             if (typeOfPacket == "Window" and dataType >= 4):
                 typeOfPacket = "Command"
-                dataType = 0
+                dataType = -1
             else:
                 typeOfPacket = "Window"
                 dataType += 1
@@ -114,7 +114,8 @@ def main():
             if (dataType == 2):
                 dataType = 4
             
-            print("Data Type: ", dataType)
+            if (typeOfPacket == "Window"):
+                print("Data Type: ", dataType)
 
             timeElasped = 0
         else:
